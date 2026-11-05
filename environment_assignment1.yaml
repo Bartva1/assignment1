@@ -1,0 +1,12 @@
+name: agentic_ai_assignment1
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - numpy>=1.26.0
+  - matplotlib>=3.8.0
+  - pytorch>=2.2.0
+  - ipykernel
+
