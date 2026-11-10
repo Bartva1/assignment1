@@ -1,6 +1,4 @@
-"""src/agents.py - Agent factory builders and sweep registries."""
-
-from src.configs import A2C_CONFIG, BASE_PPO_CONFIG, REINFORCE_CONFIG
+from configs.configs import A2C_CONFIG, BASE_PPO_CONFIG, REINFORCE_CONFIG
 from src.rewards import (
     alpha_welfare_reward,
     conditional_reciprocity_reward,
@@ -10,8 +8,6 @@ from src.rewards import (
 
 
 def build_ppo_agent(agent_cls, config, reward_fn):
-    """Creates a factory function make_agent(n_inputs, seed) compatible with play_match."""
-
     def make_agent(n_inputs, seed):
         agent = agent_cls(n_inputs, 4, config=config, seed=seed)
         agent.training_reward = reward_fn
@@ -19,16 +15,6 @@ def build_ppo_agent(agent_cls, config, reward_fn):
 
     return make_agent
 
-
-def get_algorithm_comparison_agents(agent_cls, reward_fn=own_reward):
-    """Compares the 3 RL algorithms (PPO vs A2C vs REINFORCE) on the same reward function."""
-    return {
-        'PPO (Baseline)': build_ppo_agent(agent_cls, BASE_PPO_CONFIG, reward_fn),
-        'A2C (Baseline)': build_ppo_agent(agent_cls, A2C_CONFIG, reward_fn),
-        'REINFORCE (Baseline)': build_ppo_agent(
-            agent_cls, REINFORCE_CONFIG, reward_fn
-        ),
-    }
 
 
 def get_sweep_agents(agent_cls):

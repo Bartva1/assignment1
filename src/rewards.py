@@ -1,4 +1,4 @@
-
+from configs.configs import RunConfig
 import numpy as np
 
 
@@ -21,17 +21,17 @@ def alpha_welfare_reward(alpha=0.5):
 
 
 def conditional_reciprocity_reward(coop_reward_fn, defect_reward_fn):
-    """Tit-for-Tat reward: checks Red's last 4 pickups (lamps at obs[:, 108:112]).
+    """Tit-for-Tat reward: checks Red's last 4 pickups.
 
     Switches to defect_reward_fn if Red took any blue coin (-1).
     """
 
     def reward_fn(my_reward, other_reward, observations):
-        red_lamps = observations[:, 108:112]
+        red_lamps = observations[:, RunConfig.red_lamp_indices]
         red_defected = (red_lamps == -1).any(axis=1)
 
-        r_coop = coop_reward_fn(my_reward, other_reward, observations)
-        r_defect = defect_reward_fn(my_reward, other_reward, observations)
-        return np.where(red_defected, r_defect, r_coop)
+        reward_coop = coop_reward_fn(my_reward, other_reward, observations)
+        reward_defect = defect_reward_fn(my_reward, other_reward, observations)
+        return np.where(red_defected, reward_defect, reward_coop)
 
     return reward_fn

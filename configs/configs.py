@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 BASE_PPO_CONFIG = dict(
     lr=3e-3,
     gamma=0.99,
@@ -21,3 +23,14 @@ ALGORITHM_CONFIGS = {
     'A2C': A2C_CONFIG,
     'REINFORCE': REINFORCE_CONFIG,
 }
+
+
+@dataclass(frozen=True, init=False)
+class RunConfig:
+    red_lamp_indices = slice(108, 112)
+    seeds = tuple(i for i in range(1,6))
+
+
+@dataclass(frozen=True, init=False)
+class PathConfig:
+    checkpoint_path = "results/sweep_matches.pkl"
